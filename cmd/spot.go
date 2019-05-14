@@ -53,8 +53,17 @@ func preRootCmd(cmd *cobra.Command, args []string) {
 		spotify.ScopeUserReadRecentlyPlayed,
 		spotify.ScopeUserTopRead,
 	)
-	spotifyClientID := os.Getenv("SPOTIFY_ID")
-	spotifyClientSecret := os.Getenv("SPOTIFY_SECRET")
+
+	_, ok := os.LookupEnv("SPOT_ID")
+	if !ok {
+		log.Fatal("App Client ID missing")
+	}
+	_, ok = os.LookupEnv("SPOT_SECRET")
+	if !ok {
+		log.Fatal("App Client Secret missing")
+	}
+	spotifyClientID := os.Getenv("SPOT_ID")
+	spotifyClientSecret := os.Getenv("SPOT_SECRET")
 	auth.SetAuthInfo(spotifyClientID, spotifyClientSecret)
 
 	if cmd.Use == "login" {
